@@ -15,17 +15,22 @@ export default class Search extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     console.log('%c On Submit', 'color:green', this.state.text);
-    this.props.searchUsers(this.state.text);
-    //after passing search value to parent component clear state
-    this.setState({
-      text: '',
-    });
+    if (this.state.text === '') {
+      this.props.setAlert('Please enter something', 'light');
+    } else {
+      this.props.searchUsers(this.state.text);
+      //after passing search value to parent component clear state
+      this.setState({
+        text: '',
+      });
+    }
   };
 
   static propTypes = {
     searchUsers: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired /* ptfr */,
     showClearBtn: PropTypes.bool.isRequired /* ptbr */,
+    setAlert: PropTypes.func.isRequired,
   };
 
   render() {

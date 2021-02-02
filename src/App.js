@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
 import axios from 'axios';
 import Search from './components/Search';
+import Alert from './components/layout/Alert';
 
 class App extends Component {
   state = {
@@ -29,17 +30,38 @@ class App extends Component {
 
     const link = `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&
     client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
-    const res = await axios.get(link).catch((e) => console.log(e));
-    console.log('From App', res);
-    this.setState({
-      users: res.data.items,
-      loading: false,
+    const res = await axios.get(link).catch((e) => {
+      this.setState({ loading: false });
+      //alert
+      console.log(e);
     });
+    console.log('From App', res);
+    if (res) {
+      this.setState({
+        users: res.data.items,
+        loading: false,
+      });
+    }
   };
   clearUsers = () => {
     this.setState({
       users: [],
+      loading: false,
+      alert: null,
     });
+  };
+  setAlert = (msg, type) => {
+    this.setState({
+      alert: {
+        msg,
+        type,
+      },
+    });
+    setTimeout(() => {
+        this.setState({
+          alert:null
+        })
+      }, 3000);
   };
   render() {
     const { users, loading } = this.state;
@@ -47,10 +69,12 @@ class App extends Component {
       <div className='App'>
         <Navbar />
         <div className='container'>
+        <Alert alert={this.state.alert}/>
           <Search
             searchUsers={this.searchUsers}
             clearUsers={this.clearUsers}
             showClearBtn={users.length > 0 ? true : false}
+            setAlert={this.setAlert}
           />
           <Users loading={loading} users={users} />
         </div>
