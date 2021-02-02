@@ -10,7 +10,7 @@ class App extends Component {
     users: [],
     loading: false,
   };
-
+  /* 
   async componentDidMount() {
     this.setState({ loading: true });
 
@@ -22,7 +22,7 @@ class App extends Component {
       client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     );
     this.setState({ users: res.data, loading: false });
-  }
+  } */
 
   searchUsers = async (text) => {
     this.setState({ loading: true });
@@ -36,14 +36,23 @@ class App extends Component {
       loading: false,
     });
   };
-
+  clearUsers = () => {
+    this.setState({
+      users: [],
+    });
+  };
   render() {
+    const { users, loading } = this.state;
     return (
       <div className='App'>
         <Navbar />
         <div className='container'>
-          <Search searchUsers={this.searchUsers} />
-          <Users loading={this.state.loading} users={this.state.users} />
+          <Search
+            searchUsers={this.searchUsers}
+            clearUsers={this.clearUsers}
+            showClearBtn={users.length > 0 ? true : false}
+          />
+          <Users loading={loading} users={users} />
         </div>
       </div>
     );

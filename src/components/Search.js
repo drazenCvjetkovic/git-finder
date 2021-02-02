@@ -24,16 +24,20 @@ export default class Search extends Component {
 
   static propTypes = {
     searchUsers: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired /* ptfr */,
+    showClearBtn: PropTypes.bool.isRequired /* ptbr */,
   };
 
   render() {
+    //destructing
+    const { clearUsers, showClearBtn } = this.props;
     return (
       <div>
         <form className='form' onSubmit={this.onSubmit}>
           <input
             type='text'
             name='text'
-            placeholder='search users ...'
+            placeholder='Search users ...'
             value={this.state.text}
             onChange={(e) => this.onChange(e)}
           />
@@ -43,6 +47,11 @@ export default class Search extends Component {
             className='btn btn-dark btn-block'
           />
         </form>
+        {showClearBtn && (
+          <button className='btn btn-light btn-block' onClick={clearUsers}>
+            Clear
+          </button>
+        )}
       </div>
     );
   }
