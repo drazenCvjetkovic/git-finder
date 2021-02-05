@@ -13,6 +13,7 @@ class App extends Component {
   state = {
     users: [],
     loading: false,
+    user: {},
   };
   /* 
   async componentDidMount() {
@@ -73,7 +74,7 @@ class App extends Component {
     client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     const res = await axios.get(link).catch((e) => {
       this.setState({ loading: false });
-      console.log('Error frtching user', username, e);
+      console.log('Error fetching user', username, e);
     });
     if (res) {
       console.info(res);
