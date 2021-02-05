@@ -12,8 +12,10 @@ import { About } from './components/pages/About';
 class App extends Component {
   state = {
     users: [],
-    loading: false,
     user: {},
+    repos: [],
+    loading: false,
+    alert: null,
   };
   /* 
   async componentDidMount() {
@@ -81,8 +83,21 @@ class App extends Component {
       this.setState({ user: res.data, loading: false });
     }
   };
+
+  getUserRepos = async (username) => {
+    const link = `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=$
+    {process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+    const res = await axios.get(link).catch((e) => {
+      this.setState({ loading: false });
+      console.log('Error fetching user', username, e);
+    });
+    if (res) {
+      console.info(res);
+      this.setState({ repos: res.data, loading: false });
+    }
+  };
   render() {
-    const { users, loading, user } = this.state;
+    const { users, loading, user, repos } = this.state;
     return (
       <Router>
         <div className='App'>
@@ -113,7 +128,9 @@ class App extends Component {
                   <User
                     {...props}
                     getUser={this.getUser}
+                    getUserRepos={this.getUserRepos}
                     user={user}
+                    repos={repos}
                     loading={loading}
                   />
                 )}
