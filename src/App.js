@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
@@ -19,8 +19,7 @@ const App = () => {
   const searchUsers = async (text) => {
     setLoading(true);
 
-    const link = `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&
-    client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+    const link = `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     const res = await axios.get(link).catch((e) => {
       setLoading(false);
       //alert
@@ -33,8 +32,6 @@ const App = () => {
 
   const clearUsers = () => {
     setUsers([]);
-    setUser({});
-    setAlert(null);
     setLoading(false);
   };
 
@@ -43,7 +40,7 @@ const App = () => {
 
     setTimeout(() => {
       setAlert(null);
-    }, 3000);
+    }, 5000);
   };
 
   const getUser = async (username) => {
@@ -67,13 +64,10 @@ const App = () => {
       console.log('Error fetching user', username, e);
     });
     if (res) {
-      console.info(res);
       setRepos(res.data);
       setLoading(false);
     }
   };
-
-  console.log('OnApp', users);
 
   return (
     <Router>
@@ -88,10 +82,10 @@ const App = () => {
               render={(props) => (
                 <Fragment>
                   <Search
-                    searchUsers={searchUsers()}
-                    clearUsers={clearUsers()}
+                    searchUsers={searchUsers}
+                    clearUsers={clearUsers}
                     showClearBtn={users.length > 0 ? true : false}
-                    setAlert={handleAlert()}
+                    setAlert={handleAlert}
                   />
                   <Users loading={loading} users={users} />
                 </Fragment>
@@ -104,8 +98,8 @@ const App = () => {
               render={(props) => (
                 <User
                   {...props}
-                  getUser={getUser()}
-                  getUserRepos={getUserRepos()}
+                  getUser={getUser}
+                  getUserRepos={getUserRepos}
                   user={user}
                   repos={repos}
                   loading={loading}
