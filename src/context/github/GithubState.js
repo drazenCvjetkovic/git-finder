@@ -76,7 +76,7 @@ const GithubState = (props) => {
         getUser,
       }}
     >
-      {props.provider}
+      {props.children}
     </GithubContext.Provider>
   );
 };
