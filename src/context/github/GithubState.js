@@ -26,8 +26,6 @@ const GithubState = (props) => {
     setLoading();
     const link = `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     const res = await axios.get(link).catch((e) => {
-      // setLoading(false);
-      //alert
       console.log(e);
     });
 
@@ -62,23 +60,14 @@ const GithubState = (props) => {
     const link = `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=$
     {process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     const res = await axios.get(link).catch((e) => {
-      // setLoading(false);
       console.log('Error fetching user', username, e);
     });
 
-    /* if (res) {
-      setRepos(res.data);
-      setLoading(false);
-    } */
     dispatch({
       type: GET_REPOS,
       payload: res.data,
     });
   };
-  //get user
-  //get repos
-  //clear user
-  //set loading
 
   const setLoading = () => dispatch({ type: SET_LOADING });
 

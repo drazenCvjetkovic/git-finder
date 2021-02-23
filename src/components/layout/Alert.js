@@ -1,10 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
+import AlertContext from '../../context/alert/alertContext';
+
 ///rafcp
-//alt + 96 for backticks
-//i.fa.fa-info-circle
-const Alert = ({ alert }) => {
-  //const {msg ,type} = alert
+
+const Alert = () => {
+  const alertContext = useContext(AlertContext);
+  const { alert } = alertContext;
   return (
     alert != null && (
       <div className={`alert alert-${alert.type}`}>
@@ -12,11 +13,6 @@ const Alert = ({ alert }) => {
       </div>
     )
   );
-};
-
-Alert.propTypes = {
-  msg: PropTypes.string || undefined,
-  type: PropTypes.string || undefined,
 };
 
 export default Alert;
