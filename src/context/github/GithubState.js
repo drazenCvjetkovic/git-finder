@@ -18,13 +18,22 @@ const GithubState = (props) => {
     loading: false,
   };
 
+  let githubClientId;
+  let githubClientSecret;
+  if (process.env.NODE_ENV !== 'production') {
+    githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    githubClientSecret = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+  } else {
+    githubClientId = process.env.GITHUB_CLIENT_ID;
+    githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
+  }
   const [state, dispatch] = useReducer(GithubReducer, initialState);
 
   //search users
   const searchUsers = async (text) => {
     console.log('On seach users');
     setLoading();
-    const link = `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+    const link = `https://api.github.com/search/users?q=${text}&client_id=${githubClientId}&client_secret=${githubClientSecret}`;
     const res = await axios.get(link).catch((e) => {
       console.log(e);
     });
@@ -36,8 +45,8 @@ const GithubState = (props) => {
   };
 
   const getUser = async (username) => {
-    const link = `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&
-    client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+    const link = `https://api.github.com/users/${username}?client_id=${githubClientId}&
+    client_secret=${githubClientSecret}`;
     const res = await axios.get(link).catch((e) => {
       setLoading(false);
       console.log('Error fetching user', username, e);
@@ -57,8 +66,8 @@ const GithubState = (props) => {
 
   const getUserRepos = async (username) => {
     setLoading();
-    const link = `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=$
-    {process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+    const link = `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=
+    ${githubClientId}&client_secret=${githubClientSecret}`;
     const res = await axios.get(link).catch((e) => {
       console.log('Error fetching user', username, e);
     });
